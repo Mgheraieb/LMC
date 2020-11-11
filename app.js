@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyparser = require('body-parser')
 const mongoose = require('mongoose')
+const userRoute = require('./routes/user')
 
 const app = express()
 
@@ -30,5 +31,11 @@ app.use(bodyparser.json())
 app.get('/api/', (req, res, next) => {
     res.status(200).json({ok :'ok'})
 })
+
+app.use('/api/users', userRoute)
+
+// app.post('/api/user/register', (req, res, next) => {
+
+// })
 
 module.exports = app;

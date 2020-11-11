@@ -5,4 +5,5 @@ const controller = require('../controllers/item')
 router.post('/create',controller.create)
 router.get('/',controller.getAll)
 router.get('/:name',controller.getOne)
+router.put('/update', controller.update)
 module.exports = router

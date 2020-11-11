@@ -59,3 +59,49 @@ exports.getOne = (req, res, next) => {
         return res.status(200).json(result)
     })
 }
+
+exports.update = (req, res, next) =>{
+    const token = req.body.token;
+    const id = req.body.itemid
+    if (!token)
+        return res.status(401).json({error: "Please login"})
+    const categoryId = req.body.category;
+    const name = req.body.name;
+    const description = req.body.description
+    if (!categoryId || !name)
+        return res.status(401).json({error : "Please fill all fields"})
+    const userFindQuery = User.findOne({token : token})
+    userFindQuery.exec((error, user) => {
+        if (error)
+            return res.status(500).json(error)
+        if (!user)
+            return res.status(404).json({error : "Please login"})
+        const itemFindQuery = Item.findById(id)
+        itemFindQuery.exec((error, item) => {
+            if (error)
+                return res.status(500).json(error)
+            if (!item)
+                return res.status(404).json({error: "Item not found"})
+            console.log(user._id)
+            console.log(item.ownerId)
+            if (item.ownerId != user._id)
+                return res.status(401).json({error: "Not owner" })
+            const categoryFindId = Category.findById(categoryId)
+            categoryFindId.exec((error, category) => {
+               if (error)
+                   return res.status(500).json(error)
+                if (!category)
+                    return res.status(404).json({error: "Category not found"})
+                item.name = name
+                item.categoryId = category._id
+                item.description = description
+                item.save()
+                    .then(() => res.status(200).json({
+                        message: "Modified",
+                        item
+                    }))
+                    .catch((err) => res.status(500).json(err))
+            })
+        })
+    })
+}

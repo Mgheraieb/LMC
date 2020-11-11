@@ -107,3 +107,62 @@ exports.me = (req, res, next) => {
         })
         .catch((error) => res.status(500).json({error}));
 }
+
+exports.updatePassword = (req, res, next) =>{
+    const token = req.body.token
+    const oldPassword = req.body.oldPassword
+    const newPassword = req.body.newPassword
+    if (!token)
+        return res.status(403).json({error : "Please login"})
+    if (!oldPassword || !newPassword)
+        return res.status(400).json({error: "Please fill all fields"})
+    const userFindQuery = User.findOne({token : token})
+    userFindQuery.exec((error, result) => {
+        if (error)
+            return res.status(500).json(error)
+        if (!result)
+            return res.status(403).json({error : "Please login"})
+        const user = result
+        bcrypt.compare(oldPassword, user.password, function (err, isMatch) {
+            if (isMatch) {
+                user.password = newPassword
+                user.save()
+            } else {
+            }
+        })
+    })
+}
+
+
+exports.updateEmail = (req, res, next) => {
+    const token = req.body.token
+    const password = req.body.password
+    const email = req.body.email
+    if (!token)
+        return res.status(403).json({error: "Please login"})
+    if (!password || !email)
+        return res.status(403).json({error: "Please fill all fields"})
+    const userFindQuery = User.findOne({token: token})
+    userFindQuery.exec((error, user) => {
+        if (error)
+            return res.status(500).json(error)
+        if (!user)
+            return res.status(403).json({error: "Please login"})
+        const checkDouble = User.findOne({email : email})
+        checkDouble.exec((error , result) => {
+            if (error)
+                return res.status(500).json(error)
+            if (result)
+                return res.status(403).json({error: "Email already taken"})
+            bcrypt.compare(password, user.password, function (err, isMatch) {
+                if (isMatch) {
+                    user.email = email
+                    user.save()
+                    return res.status(200).json(user)
+                } else {
+                    return res.status(403).json({error: "Password error"})
+                }
+            })
+        })
+    })
+}

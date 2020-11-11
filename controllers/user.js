@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const jwt = require("jsonwebtoken");
+
 
 const searchUser = async  (username, email) => {
     let result = []
@@ -61,9 +63,17 @@ exports.login = async (req, res , next) => {
         if (user) {
             bcrypt.compare(password, user.password, function (err, isMatch) {
                 if (isMatch) {
-                    res.status(200).json({user})
+                    token =  jwt.sign(
+                        { userId: user._id },
+                        'RANDOM_TOKEN',
+                        { expiresIn: '12h' }
+                    )
+                    user.token = token
+                    user.save()
+                    res.status(200).json({
+                        user
+                    })
                 } else {
-                    res.status(404).json({error: "Username or password incorrect"})
                 }
             })
         }
@@ -89,7 +99,7 @@ exports.me = (req, res, next) => {
         res.status(403).json({error: "Token undefined"});
         return;
     }
-    User.findOne({name : token})
+    User.findOne({token: token})
         .then((user) => {
             if (user === null) {
                 res.status(404).json({user});

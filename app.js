@@ -36,6 +36,6 @@ app.use('/api/users', userRoute)
 app.use('/api/category', categoryRoute)
 app.use('/api/items', itemRoute)
 app.get('/test', (req, res,next)=>{
-    res.send("Hello world")
+    res.send("NEW TEST")
 })
 module.exports = app;

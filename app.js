@@ -3,9 +3,9 @@ const bodyparser = require('body-parser')
 const mongoose = require('mongoose')
 const userRoute = require('./routes/user')
 const categoryRoute = require('./routes/category')
+const itemRoute = require('./routes/item')
+
 const app = express()
-
-
 const username = 'moha'
 const password = 'Aqzsed94'
 const dbname = 'LBCDB'
@@ -33,9 +33,7 @@ app.get('/api/', (req, res, next) => {
 })
 
 app.use('/api/users', userRoute)
-app.use('/api/category',categoryRoute)
-// app.post('/api/user/register', (req, res, next) => {
-
-// })
+app.use('/api/category', categoryRoute)
+app.use('/api/items', itemRoute)
 
 module.exports = app;

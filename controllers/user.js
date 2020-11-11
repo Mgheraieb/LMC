@@ -70,9 +70,7 @@ exports.login = async (req, res , next) => {
                     )
                     user.token = token
                     user.save()
-                    res.status(200).json({
-                        user
-                    })
+                    res.status(200).json(user)
                 } else {
                 }
             })
@@ -88,9 +86,9 @@ exports.user = (req, res, next) => {
                 res.status(404).json({user});
                 return;
             }
-            res.status(200).json({user});
+            res.status(200).json(user);
         })
-        .catch((error) => res.status(500).json({error}));
+        .catch((error) => res.status(500).json(error));
 }
 
 exports.me = (req, res, next) => {
@@ -105,7 +103,7 @@ exports.me = (req, res, next) => {
                 res.status(404).json({user});
                 return;
             }
-            res.status(200).json({user});
+            res.status(200).json(user);
         })
         .catch((error) => res.status(500).json({error}));
 }

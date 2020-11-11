@@ -2,7 +2,7 @@ const express = require('express');
 const bodyparser = require('body-parser')
 const mongoose = require('mongoose')
 const userRoute = require('./routes/user')
-
+const categoryRoute = require('./routes/category')
 const app = express()
 
 
@@ -33,7 +33,7 @@ app.get('/api/', (req, res, next) => {
 })
 
 app.use('/api/users', userRoute)
-
+app.use('/api/category',categoryRoute)
 // app.post('/api/user/register', (req, res, next) => {
 
 // })

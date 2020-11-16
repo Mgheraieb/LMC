@@ -14,10 +14,16 @@ const itemSchema = mongoose.Schema({
         required: false
     },
     createdAt: {
-        type: Date, default: Date.now()
+        type: Date,
+        default: Date.now()
     },
     UpdatedAt: {
-        type: Date, default: Date.now()
+        type: Date,
+        default: Date.now()
+    },
+    location: {
+        type: String,
+        required: true
     },
     ownerId: {
         type: String,

@@ -66,9 +66,10 @@ exports.update = (req, res, next) =>{
     if (!token)
         return res.status(401).json({error: "Please login"})
     const categoryId = req.body.category;
+    const location = req.body.location
     const name = req.body.name;
     const description = req.body.description
-    if (!categoryId || !name)
+    if (!categoryId || !name || !location)
         return res.status(401).json({error : "Please fill all fields"})
     const userFindQuery = User.findOne({token : token})
     userFindQuery.exec((error, user) => {
@@ -95,6 +96,7 @@ exports.update = (req, res, next) =>{
                 item.name = name
                 item.categoryId = category._id
                 item.description = description
+                item.location = location
                 item.save()
                     .then(() => res.status(200).json({
                         message: "Modified",

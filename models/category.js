@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const categorySchema  = mongoose.Schema({
     name: {
         type: String,
-        match: [/^$/, `Category name required`],
         unique: true,
         maxlength: 200,
         required: [true, "Category name required"]

@@ -5,6 +5,8 @@ const userRoute = require('./routes/user')
 const categoryRoute = require('./routes/category')
 const itemRoute = require('./routes/item')
 
+const authRoute = require('./routes/auth')
+
 const app = express()
 const username = 'moha'
 const password = 'Aqzsed94'
@@ -35,7 +37,5 @@ app.get('/api/', (req, res, next) => {
 app.use('/api/users', userRoute)
 app.use('/api/category', categoryRoute)
 app.use('/api/items', itemRoute)
-app.get('/test', (req, res,next)=>{
-    res.send("DOCKER CONTAINER OK!!!")
-})
+app.use('/api/auth', authRoute)
 module.exports = app;
